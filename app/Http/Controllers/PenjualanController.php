@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\DetailPenjualan;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
@@ -34,10 +36,14 @@ class PenjualanController extends Controller
 
     public function transaksi($id)
     {
-        $penjualan = Penjualan::find($id);
-        $detailpenjualan = DetailPenjualan::where('nobon', $id)->get();
+        $detailpenjualan = DetailPenjualan::where('nobon', $id)
+            ->select('id_barang', 'nobon', 'harga', DB::raw('count(*) as total'))
+            ->groupBy('id_barang', 'nobon', 'harga')  // Include other columns you want to group by
+            ->get();
 
-        return view('home.penjualan.tambah', compact('penjualan', 'detailpenjualan'));
+        $barangCounts = $detailpenjualan->pluck('total', 'id_barang');
+
+        return view('home.penjualan.tambah', compact('detailpenjualan', 'barangCounts'));
     }
 
     /**
