@@ -7,17 +7,24 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h1>Tambah Data User</h1>
-
+                                <h1>Tambah Item</h1>
+                                @if (session('error'))
+                                    <script>
+                                        alert('{{ session('error') }}');
+                                    </script>
+                                @endif
                             </div>
                             <div class="card-body">
 
                                 <div class="mb-3">
                                     <div class="row">
                                         <div class="col-md-9 mb-3">
-                                            <form action="" method="post">
+                                            <form action="/penjualan/scan" method="post">
+                                                @csrf
+                                                <input type="hidden" name="nobon" value="{{ $nobon->id }}"
+                                                    id="">
                                                 <input type="text" class="form-control" name="id_barang" id="id_barang"
-                                                    placeholder="Kode Barang" />
+                                                    placeholder="Kode Barang" autofocus />
                                         </div>
 
                                         <div class="col-1 mb-3">

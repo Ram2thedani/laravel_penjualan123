@@ -4,21 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\DetailPenjualan;
-use App\Models\Penjualan;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
-class PenjualanController extends Controller
+class DetailPenjualanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $penjualan = Penjualan::all();
-        return view('home.penjualan.index', compact('penjualan'));
+        //
     }
 
     /**
@@ -26,25 +22,7 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        Penjualan::create([
-            'id_user' => Auth::user()->id,
-            'status' => 'Belum Selesai',
-        ]);
-
-        return redirect()->back();
-    }
-
-    public function transaksi($id)
-    {
-        $nobon = Penjualan::find($id);
-        $detailpenjualan = DetailPenjualan::where('nobon', $id)
-            ->select('id_barang', 'nobon', 'harga', DB::raw('count(*) as total'))
-            ->groupBy('id_barang', 'nobon', 'harga')  // Include other columns you want to group by
-            ->get();
-
-        $barangCounts = $detailpenjualan->pluck('total', 'id_barang');
-    
-        return view('home.penjualan.tambah', compact('detailpenjualan', 'barangCounts', 'nobon'));
+        //
     }
 
     /**
@@ -52,7 +30,21 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barcode = $request->input('id_barang');
+        $scan = Barang::where('barcode', $barcode)->first();
+
+        if ($scan) {
+            DetailPenjualan::create([
+                'nobon' => $request->nobon,
+                'id_barang' => $scan->id,
+                'harga' => $scan->harga,
+                'jumlah' => 0,
+
+            ]);
+            return redirect()->back();
+        } else {
+            return redirect()->back()->with('error', 'Barang not found');
+        }
     }
 
     /**

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('satuan');
             $table->integer('stok');
             $table->integer('photo');
+            $table->string('barcode');
             $table->timestamps();
         });
     }
