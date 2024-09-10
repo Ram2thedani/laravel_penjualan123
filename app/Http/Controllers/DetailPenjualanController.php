@@ -34,13 +34,19 @@ class DetailPenjualanController extends Controller
         $scan = Barang::where('barcode', $barcode)->first();
 
         if ($scan) {
-            DetailPenjualan::create([
-                'nobon' => $request->nobon,
-                'id_barang' => $scan->id,
-                'harga' => $scan->harga,
-                'jumlah' => 0,
 
-            ]);
+            $qty = $request->input('qty');
+
+            for ($i = 0; $i < $qty; $i++) {
+
+                DetailPenjualan::create([
+                    'nobon' => $request->nobon,
+                    'id_barang' => $scan->id,
+                    'harga' => $scan->harga,
+                    'jumlah' => 0,
+
+                ]);
+            }
             return redirect()->back();
         } else {
             return redirect()->back()->with('error', 'Barang not found');
@@ -74,8 +80,17 @@ class DetailPenjualanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id_barang, $nobon)
     {
-        //
+        $detail = DetailPenjualan::where('nobon', $nobon)
+            ->where('id_barang', $id_barang);
+
+        // Check if the detail exists, then delete it
+        if ($detail) {
+            $detail->delete();
+            return redirect()->back()->with('success', 'Item deleted successfully');
+        } else {
+            return redirect('/');
+        }
     }
 }

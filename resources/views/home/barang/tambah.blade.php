@@ -38,6 +38,10 @@
                                         <label for="" class="form-label">Foto</label>
                                         <input type="file" name="photo" class="form-control" id="">
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Foto</label>
+                                        <input type="file" name="barcode" class="form-control" id="">
+                                    </div>
 
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                 </form>

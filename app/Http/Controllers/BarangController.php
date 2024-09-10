@@ -38,6 +38,7 @@ class BarangController extends Controller
             'satuan' => $request->satuan,
             'harga' => $request->harga,
             'photo' => $imagepath,
+            'barcode' => $request->barcode,
         ]);
         return redirect('/barang');
     }

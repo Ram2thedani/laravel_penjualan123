@@ -8,11 +8,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h1>Tambah Item</h1>
-                                @if (session('error'))
-                                    <script>
-                                        alert('{{ session('error') }}');
-                                    </script>
-                                @endif
+
                             </div>
                             <div class="card-body">
 
@@ -23,8 +19,12 @@
                                                 @csrf
                                                 <input type="hidden" name="nobon" value="{{ $nobon->id }}"
                                                     id="">
-                                                <input type="text" class="form-control" name="id_barang" id="id_barang"
-                                                    placeholder="Kode Barang" autofocus />
+                                                <input type="text" onblur="this.focus()" class="form-control"
+                                                    name="id_barang" id="id_barang" placeholder="Kode Barang" autofocus />
+                                                @if (session('error'))
+                                                    <p style="color: red"><i>Barang tidak ditemukan</i></p>
+                                                @endif
+
                                         </div>
 
                                         <div class="col-1 mb-3">
@@ -59,7 +59,7 @@
                                                 <td>{{ $detailpenjualan->barang->nama_barang }}</td>
                                                 <td>{{ $detailpenjualan->barang->harga }}</td>
                                                 <td> {{ $barangCounts[$detailpenjualan->id_barang] ?? 0 }}</td>
-                                                <td> <a href="/detailpenjualan/hapus/{{ $detailpenjualan->id_barang }}"
+                                                <td> <a href="/detailpenjualan/hapus/{{ $detailpenjualan->id_barang }}/{{ $detailpenjualan->nobon }}"
                                                         class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
