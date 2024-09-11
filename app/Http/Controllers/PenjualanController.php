@@ -17,7 +17,7 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $penjualan = Penjualan::all();
+        $penjualan = Penjualan::orderBy('id', 'desc')->get();
         return view('home.penjualan.index', compact('penjualan'));
     }
 
@@ -43,7 +43,7 @@ class PenjualanController extends Controller
             ->get();
 
         $barangCounts = $detailpenjualan->pluck('total', 'id_barang');
-    
+
         return view('home.penjualan.tambah', compact('detailpenjualan', 'barangCounts', 'nobon'));
     }
 
