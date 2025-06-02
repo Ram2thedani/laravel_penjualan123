@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="" class="form-label">Harga</label>
-                                        <input type="text" class="form-control" name="harga" id=""
+                                        <input type="number" class="form-control" name="harga" id=""
                                             aria-describedby="helpId" placeholder="" />
                                     </div>
                                     <div class="mb-3">
@@ -39,8 +39,9 @@
                                         <input type="file" name="photo" class="form-control" id="">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="" class="form-label">Foto</label>
-                                        <input type="file" name="barcode" class="form-control" id="">
+                                        <label for="" class="form-label">Barcode</label>
+                                        <input type="number" name="barcode" placeholder="(Scan atau ketik manual)"
+                                            class="form-control" id="">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Simpan</button>

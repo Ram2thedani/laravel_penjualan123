@@ -29,6 +29,10 @@ class PenjualanController extends Controller
         Penjualan::create([
             'id_user' => Auth::user()->id,
             'status' => 'Belum Selesai',
+            'total' => 0,
+            'diskon' => 0,
+            'bayar' => 0,
+            'kembali' => 0,
         ]);
 
         return redirect()->back();

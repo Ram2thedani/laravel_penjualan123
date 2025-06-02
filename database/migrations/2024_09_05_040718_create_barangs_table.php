@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('harga');
             $table->string('satuan');
             $table->integer('stok');
-            $table->integer('photo');
+            $table->string('photo');
             $table->string('barcode');
             $table->timestamps();
         });
