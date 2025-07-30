@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
             $table->integer('total');
-            $table->integer('diskon');
-            $table->integer('bayar');
-            $table->integer('kembali');
             $table->integer('id_user');
             $table->string('status');
             $table->timestamps();

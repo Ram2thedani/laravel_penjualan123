@@ -12,7 +12,8 @@
                             </div>
                             <div class="card-body">
 
-                                <form action="/barang/update/{{ $barang->id }}" method="post">
+                                <form action="/barang/update/{{ $barang->id }}" method="post"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="" class="form-label">Nama Barang</label>

@@ -29,7 +29,7 @@
                                         <tbody>
                                             @foreach ($penjualan as $penjualan)
                                                 <tr class="">
-                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $penjualan->id }}</td>
                                                     <td>{{ $penjualan->user->nama }}</td>
                                                     <td>{{ $penjualan->total }}</td>
                                                     <td>{{ $penjualan->created_at }}</td>
@@ -39,7 +39,35 @@
                                                             <a class="btn btn-primary"
                                                                 href="/penjualan/transaksi/{{ $penjualan->id }}">Lengkapi
                                                                 Transaksi</a>
-                                                        @else
+                                                        @elseif ($penjualan->status == 'Menunggu Pembayaran')
+                                                            <button type="button" id="pay-button" target="_blank"
+                                                                class="btn btn-primary">Bayar
+                                                                Sekarang</button>
+                                                            @section('script')
+                                                                <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+                                                                <script type="text/javascript">
+                                                                    document.getElementById('pay-button').onclick = function() {
+                                                                        // SnapToken acquired from previous step
+                                                                        snap.pay('{{ $penjualan->snap_token }}', {
+                                                                            // Optional
+                                                                            onSuccess: function(result) {
+                                                                                /* You may add your own js here, this is just example */
+                                                                                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                                                            },
+                                                                            // Optional
+                                                                            onPending: function(result) {
+                                                                                /* You may add your own js here, this is just example */
+                                                                                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                                                            },
+                                                                            // Optional
+                                                                            onError: function(result) {
+                                                                                /* You may add your own js here, this is just example */
+                                                                                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                                                            }
+                                                                        });
+                                                                    };
+                                                                </script>
+                                                            @endsection
                                                         @endif
                                                     </td>
 

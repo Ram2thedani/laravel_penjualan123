@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/penjualan/transaksi/{id}', [PenjualanController::class, 'transaksi']);
     Route::post('/penjualan/scan', [DetailPenjualanController::class, 'store']);
+    Route::post('/penjualan/checkout/{id}', [PenjualanController::class, 'checkout']);
 
     Route::get('/detailpenjualan/hapus/{nobon}/{id_barang}', [DetailPenjualanController::class, 'destroy']);
 });

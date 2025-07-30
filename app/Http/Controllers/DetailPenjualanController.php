@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\DetailPenjualan;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DetailPenjualanController extends Controller
 {
@@ -28,7 +30,7 @@ class DetailPenjualanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store_old(Request $request)
     {
         $barcode = $request->input('id_barang');
         $scan = Barang::where('barcode', $barcode)->first();
@@ -52,6 +54,32 @@ class DetailPenjualanController extends Controller
             return redirect()->back()->with('error', 'Barang not found');
         }
     }
+
+    public function store(Request $request)
+    {
+        $barcode = $request->input('id_barang');
+        $scan = Barang::where('barcode', $barcode)->first();
+
+        if (!$scan) {
+            return redirect()->back()->with('error', 'Barang not found');
+        }
+
+        $qty = (int) $request->input('qty');
+
+        DetailPenjualan::updateOrCreate(
+            [
+                'nobon' => $request->nobon,
+                'id_barang' => $scan->id,
+            ],
+            [
+                'harga' => $scan->harga,
+                'jumlah' => DB::raw('jumlah + ' . $qty),
+            ]
+        );
+
+        return redirect()->back();
+    }
+
 
     /**
      * Display the specified resource.

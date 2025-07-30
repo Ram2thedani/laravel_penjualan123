@@ -58,9 +58,7 @@
                                             @php
 
                                                 // Calculate sub-total for each item
-                                                $subtotal =
-                                                    $detailpenjualan->barang->harga *
-                                                    ($barangCounts[$detailpenjualan->id_barang] ?? 0);
+                                                $subtotal = $detailpenjualan->harga * $detailpenjualan->jumlah;
                                                 // Add to total
                                                 $total += $subtotal;
                                             @endphp
@@ -68,10 +66,8 @@
                                                 <td>{{ $detailpenjualan->nobon }}</td>
                                                 <td>{{ $detailpenjualan->barang->nama_barang }}</td>
                                                 <td>{{ $detailpenjualan->barang->harga }}</td>
-                                                <td> {{ $barangCounts[$detailpenjualan->id_barang] ?? 0 }}</td>
-                                                <td>
-                                                    {{ $detailpenjualan->barang->harga * ($barangCounts[$detailpenjualan->id_barang] ?? 0) }}
-                                                </td>
+                                                <td>{{ $detailpenjualan->jumlah }}</td>
+                                                <td>{{ $detailpenjualan->harga * $detailpenjualan->jumlah }}</td>
                                                 <td> <a href="/detailpenjualan/hapus/{{ $detailpenjualan->id_barang }}/{{ $detailpenjualan->nobon }}"
                                                         class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
@@ -96,9 +92,15 @@
     <footer class="main-footer">
         Total
         <h1 style="color: black">
-
-            Rp. {{ number_format($total) }}</h1>
-        <button type="submit" class="btn btn-primary">Check-out</button>
+            <form action="/penjualan/checkout/{{ $nobon->id }}" method="post">
+                @csrf
+                Rp. {{ number_format($total) }}
+                <input type="hidden" name="total" value={{ $total }}>
+        </h1>
+        @if ($total > 0)
+            <button type="submit" class="btn btn-primary">Check-out</button>
+        @endif
+        </form>
 
     </footer>
 @endsection

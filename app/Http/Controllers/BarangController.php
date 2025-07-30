@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -66,23 +68,29 @@ class BarangController extends Controller
     public function update(Request $request, string $id)
     {
         $barang = barang::find($id);
-        $barang->update([
-            'nama_barang' => $request->nama_barang,
-            'stok' => $request->stok,
-            'satuan' => $request->satuan,
-            'harga' => $request->harga,
-            'photo' => $request->photo,
-        ]);
-        return redirect('/barang');
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $barang = barang::find($id);
-        $barang->delete();
+        // Cek apakah ada file foto baru yang diunggah
+        if ($request->hasFile('photo')) {
+            // Simpan file baru
+            $imagepath = $request->file('photo')->store('storage', 'public');
+
+            // Hapus file lama jika ada
+            if ($barang->photo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($barang->photo);
+            }
+
+            $barang->photo = $imagepath;
+        }
+
+        // Update data lainnya
+        $barang->nama_barang = $request->nama_barang;
+        $barang->stok = $request->stok;
+        $barang->satuan = $request->satuan;
+        $barang->harga = $request->harga;
+        $barang->barcode = "191919";
+
+        $barang->save();
+
         return redirect('/barang');
     }
 }

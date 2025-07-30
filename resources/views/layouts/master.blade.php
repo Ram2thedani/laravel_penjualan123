@@ -133,6 +133,7 @@
     <!-- <script src="{{ asset('assets/js/demo.js') }}"></script> -->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
+    @yield('script')
 </body>
 
 </html>
